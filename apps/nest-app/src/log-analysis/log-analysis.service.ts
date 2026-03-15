@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Severity } from './log-analysis-jobs/entities/anomaly.entty';
+import { Severity } from './log-analysis-jobs/entities/anomaly.entity';
 import { LogAnalysisJobsService } from './log-analysis-jobs/log-analysis-jobs.service';
 
 @Injectable()

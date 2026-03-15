@@ -1,7 +1,7 @@
 import { LogSource } from "src/log-sources/entities/log-source.entity";
 import { RemoteServer } from "src/remote-servers/entities/remote-server.entity";
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Anomaly } from "./anomaly.entty";
+import { Anomaly } from "./anomaly.entity";
 
 export enum LogAnalysisJobStatus {
     INITIALISED = 'initialised',

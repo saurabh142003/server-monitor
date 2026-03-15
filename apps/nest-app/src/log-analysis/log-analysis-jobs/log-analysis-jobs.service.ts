@@ -6,14 +6,18 @@ import { LogAnalysisJob, LogAnalysisJobStatus } from './entities/log-analysis-jo
 import { In, Repository } from 'typeorm';
 import { LogSourcesService } from 'src/log-sources/log-sources.service';
 import { RemoteServersService } from 'src/remote-servers/remote-servers.service';
-import { Anomaly, AnomalyStatus, Severity } from './entities/anomaly.entty';
+import { Anomaly, AnomalyStatus, Severity } from './entities/anomaly.entity';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { AnomalyCreatedEvent } from 'src/shared/events/anomaly-event';
+
 
 @Injectable()
 export class LogAnalysisJobsService {
   constructor(@InjectRepository(LogAnalysisJob) private readonly logAnalysisJobRepository: Repository<LogAnalysisJob>,
     @InjectRepository(Anomaly) private readonly anomalyRepository: Repository<Anomaly>,
     private readonly logSourcesService: LogSourcesService,
-    private readonly remoteServersService: RemoteServersService) { }
+    private readonly remoteServersService: RemoteServersService,
+    private readonly eventEmitter: EventEmitter2) { }
   async create(dto: CreateLogAnalysisJobDto, ownerId: string) {
 
     const logSource = await this.logSourcesService.findOne(dto.logSourceId, ownerId);
@@ -61,10 +65,15 @@ export class LogAnalysisJobsService {
   }) {
     const job = await this.anomalyRepository.findOne({ where: { logAnalysisJob: { id: logAnalysisJob.id }, status: In([AnomalyStatus.OPEN, AnomalyStatus.IN_PROGRESS]) } });
     if (job) return;
-    await this.anomalyRepository.save({
+    const savedAnomaly = await this.anomalyRepository.save({
       ...anomaly,
       logAnalysisJob,
       status: AnomalyStatus.OPEN
     })
+
+    this.eventEmitter.emit(AnomalyCreatedEvent.name, new AnomalyCreatedEvent({
+      anomaly: savedAnomaly,
+      job: logAnalysisJob
+    }))
   }
 }

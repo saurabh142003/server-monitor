@@ -7,6 +7,7 @@ import { RemoteServersModule } from './remote-servers/remote-servers.module';
 import { AuthModule } from './auth/auth.module';
 import { LogSourcesModule } from './log-sources/log-sources.module';
 import { LogAnalysisModule } from './log-analysis/log-analysis.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -14,7 +15,7 @@ import { LogAnalysisModule } from './log-analysis/log-analysis.module';
     database: 'db.sqlite',
     autoLoadEntities: true,
     synchronize: true,
-  }), UsersModule, RemoteServersModule, AuthModule, LogSourcesModule, LogAnalysisModule],
+  }), UsersModule, RemoteServersModule, AuthModule, LogSourcesModule, LogAnalysisModule, EventEmitterModule.forRoot()],
   controllers: [AppController],
   providers: [AppService],
 })
