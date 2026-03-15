@@ -20,17 +20,17 @@ export class RemoteServersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.remoteServersService.findOne(id);
+  findOne(@Param('id') id: string, @CurrentUser() user: User) {
+    return this.remoteServersService.findOne(id, user?.id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRemoteServerDto: UpdateRemoteServerDto) {
-    return this.remoteServersService.update(id, updateRemoteServerDto);
+  update(@Param('id') id: string, @Body() updateRemoteServerDto: UpdateRemoteServerDto, @CurrentUser() user: User) {
+    return this.remoteServersService.update(id, updateRemoteServerDto, user?.id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.remoteServersService.remove(id);
+  remove(@Param('id') id: string, @CurrentUser() user: User) {
+    return this.remoteServersService.remove(id, user?.id);
   }
 }

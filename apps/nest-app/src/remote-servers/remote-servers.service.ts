@@ -17,15 +17,15 @@ export class RemoteServersService {
     return this.remoteServersRepository.find({ where: { ownerId } });
   }
 
-  findOne(id: string) {
-    return this.remoteServersRepository.findOne({ where: { id } });
+  findOne(id: string, ownerId: string) {
+    return this.remoteServersRepository.findOne({ where: { id, ownerId } });
   }
 
-  update(id: string, updateRemoteServerDto: UpdateRemoteServerDto) {
-    return this.remoteServersRepository.update(id as any, updateRemoteServerDto);
+  update(id: string, updateRemoteServerDto: UpdateRemoteServerDto, ownerId: string) {
+    return this.remoteServersRepository.update(id, { ...updateRemoteServerDto, ownerId });
   }
 
-  remove(id: string) {
-    return this.remoteServersRepository.delete(id as any);
+  remove(id: string, ownerId: string) {
+    return this.remoteServersRepository.delete({ id, ownerId });
   }
 }
