@@ -11,5 +11,6 @@ import { Anomaly } from './entities/anomaly.entty';
   imports: [TypeOrmModule.forFeature([LogAnalysisJob, Anomaly]), LogSourcesModule, RemoteServersModule],
   controllers: [LogAnalysisJobsController],
   providers: [LogAnalysisJobsService],
+  exports: [LogAnalysisJobsService]
 })
 export class LogAnalysisJobsModule { }

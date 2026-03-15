@@ -15,22 +15,22 @@ export class LogAnalysisJobsController {
   }
 
   @Get()
-  findAll() {
-    return this.logAnalysisJobsService.findAll();
+  findAll(@CurrentUser() user: User) {
+    return this.logAnalysisJobsService.findAll(user.id);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.logAnalysisJobsService.findOne(+id);
+  findOne(@Param('id') id: string, @CurrentUser() user: User) {
+    return this.logAnalysisJobsService.findOne(id, user.id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLogAnalysisJobDto: UpdateLogAnalysisJobDto) {
-    return this.logAnalysisJobsService.update(+id, updateLogAnalysisJobDto);
+  update(@Param('id') id: string, @Body() updateLogAnalysisJobDto: UpdateLogAnalysisJobDto, @CurrentUser() user: User) {
+    return this.logAnalysisJobsService.update(id, updateLogAnalysisJobDto, user.id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.logAnalysisJobsService.remove(+id);
+  remove(@Param('id') id: string, @CurrentUser() user: User) {
+    return this.logAnalysisJobsService.remove(id, user.id);
   }
 }
