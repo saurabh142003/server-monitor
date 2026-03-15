@@ -1,6 +1,7 @@
 import { LogSource } from "src/log-sources/entities/log-source.entity";
 import { RemoteServer } from "src/remote-servers/entities/remote-server.entity";
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Anomaly } from "./anomaly.entty";
 
 export enum LogAnalysisJobStatus {
     INITIALISED = 'initialised',
@@ -41,6 +42,9 @@ export class LogAnalysisJob {
     @Column()
     updatedAt: Date;
 
+    @Column({ type: "simple-json", nullable: true })
+    ticketingSystemConfig?: Record<string, any>;
+
     @OneToOne(() => LogSource, { nullable: true })
     @JoinColumn()
     logSource: LogSource;
@@ -48,4 +52,7 @@ export class LogAnalysisJob {
     @OneToOne(() => RemoteServer)
     @JoinColumn()
     remoteServer: RemoteServer;
+
+    @OneToMany(() => Anomaly, (anomaly) => anomaly.logAnalysisJob)
+    anomalies: Anomaly[];
 }

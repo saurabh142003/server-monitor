@@ -27,10 +27,8 @@ export class LogAnalysisJobsService {
     }
 
     return this.logAnalysisJobRepository.save({
+      ...dto,
       ownerId,
-      name: dto.name,
-      description: dto.description,
-      type: dto.type,
       status: LogAnalysisJobStatus.INITIALISED,
       logSource,
       remoteServer,
