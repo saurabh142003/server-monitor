@@ -38,6 +38,8 @@ export class LogAnalysisJobsService {
       status: LogAnalysisJobStatus.INITIALISED,
       logSource,
       remoteServer,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
   }
 

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateLogSourceDto } from './dto/create-log-source.dto';
 import { UpdateLogSourceDto } from './dto/update-log-source.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LogSource } from './entities/log-source.entity';
+import { LogSource, LogSourceStatus } from './entities/log-source.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class LogSourcesService {
   constructor(@InjectRepository(LogSource) private readonly logSourceRepository: Repository<LogSource>) { }
 
   create(createLogSourceDto: CreateLogSourceDto, ownerId: string) {
-    const logSource = this.logSourceRepository.create({ ...createLogSourceDto, ownerId });
+    const logSource = this.logSourceRepository.create({ ...createLogSourceDto, ownerId, status: LogSourceStatus.OFFLINE });
     return this.logSourceRepository.save(logSource);
   }
 

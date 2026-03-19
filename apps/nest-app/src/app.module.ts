@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { LogSourcesModule } from './log-sources/log-sources.module';
 import { LogAnalysisModule } from './log-analysis/log-analysis.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { TicketingModule } from './ticketing/ticketing.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -15,7 +16,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     database: 'db.sqlite',
     autoLoadEntities: true,
     synchronize: true,
-  }), UsersModule, RemoteServersModule, AuthModule, LogSourcesModule, LogAnalysisModule, EventEmitterModule.forRoot()],
+  }), UsersModule, RemoteServersModule, AuthModule, LogSourcesModule, LogAnalysisModule, EventEmitterModule.forRoot(), TicketingModule],
   controllers: [AppController],
   providers: [AppService],
 })
