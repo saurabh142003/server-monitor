@@ -18,6 +18,21 @@ export class LogAnalysisJobsService {
     private readonly logSourcesService: LogSourcesService,
     private readonly remoteServersService: RemoteServersService,
     private readonly eventEmitter: EventEmitter2) { }
+
+  async getAnomalyById(anomalyId: string) {
+    return this.anomalyRepository.findOne({
+      where: { id: anomalyId }
+    });
+  }
+
+  async getTicketingSystemConfig(jobId: string, ownerId: string) {
+    const job = await this.logAnalysisJobRepository.findOne({
+      where: { id: jobId, ownerId },
+      select: { ticketingSystemConfig: true }
+    });
+    return job?.ticketingSystemConfig;
+  }
+
   async create(dto: CreateLogAnalysisJobDto, ownerId: string) {
 
     const logSource = await this.logSourcesService.findOne(dto.logSourceId, ownerId);
@@ -66,6 +81,8 @@ export class LogAnalysisJobsService {
     ticketInfo?: Record<string, any>;
   }) {
     const job = await this.anomalyRepository.findOne({ where: { logAnalysisJob: { id: logAnalysisJob.id }, status: In([AnomalyStatus.OPEN, AnomalyStatus.IN_PROGRESS]) } });
+    console.log("Job exists");
+
     if (job) return;
     const savedAnomaly = await this.anomalyRepository.save({
       ...anomaly,
@@ -74,8 +91,9 @@ export class LogAnalysisJobsService {
     })
 
     this.eventEmitter.emit(AnomalyCreatedEvent.name, new AnomalyCreatedEvent({
-      anomaly: savedAnomaly,
-      job: logAnalysisJob
+      ownerId: logAnalysisJob.ownerId,
+      anomalyId: savedAnomaly.id,
+      jobId: logAnalysisJob.id
     }))
   }
 }
