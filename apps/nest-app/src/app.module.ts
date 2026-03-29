@@ -10,9 +10,10 @@ import { LogAnalysisModule } from './log-analysis/log-analysis.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { TicketingModule } from './ticketing/ticketing.module';
 import { DatabaseModule } from './database/database.module';
+import { QueriesModule } from './queries/queries.module';
 
 @Module({
-  imports: [UsersModule, RemoteServersModule, AuthModule, LogSourcesModule, LogAnalysisModule, EventEmitterModule.forRoot(), TicketingModule, DatabaseModule],
+  imports: [UsersModule, RemoteServersModule, AuthModule, LogSourcesModule, LogAnalysisModule, EventEmitterModule.forRoot(), TicketingModule, DatabaseModule, QueriesModule],
   controllers: [AppController],
   providers: [AppService],
 })

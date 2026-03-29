@@ -39,7 +39,7 @@ export class TicketingService {
         });
 
         this.eventEmitter.emit(TicketCreatedEvent.name, new TicketCreatedEvent({
-            ticketId: anomalyId
+            anomalyId
         }))
     }
 
