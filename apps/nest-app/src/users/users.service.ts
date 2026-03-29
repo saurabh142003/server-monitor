@@ -11,15 +11,15 @@ export class UsersService {
     @InjectRepository(User)
     private userRepo: Repository<User>,
   ) { }
-  create(user: CreateUserDto) {
+  create(user: CreateUserDto): Promise<User> {
     return this.userRepo.save(user);
   }
 
-  findAll() {
+  findAll(): Promise<User[]> {
     return this.userRepo.find();
   }
 
-  findOne(id: number) {
+  findOne(id: number): Promise<User | null> {
     const user = this.userRepo.findOne(id as any);
     if (!user) {
       throw new NotFoundException("User Not found")

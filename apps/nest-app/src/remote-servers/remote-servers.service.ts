@@ -9,8 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class RemoteServersService {
   constructor(@InjectRepository(RemoteServer) private readonly remoteServersRepository: Repository<RemoteServer>) { }
   create(createRemoteServerDto: CreateRemoteServerDto, ownerId: string) {
-    const remoteServer = this.remoteServersRepository.create({ ...createRemoteServerDto, ownerId });
-    return this.remoteServersRepository.save(remoteServer);
+    return this.remoteServersRepository.save({ ...createRemoteServerDto, ownerId });
   }
 
   findAll(ownerId: string) {

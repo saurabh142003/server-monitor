@@ -35,12 +35,7 @@ export class LogAnalysisJobsService {
 
   async create(dto: CreateLogAnalysisJobDto, ownerId: string) {
 
-    const logSource = await this.logSourcesService.findOne(dto.logSourceId, ownerId);
-
-    if (!logSource) {
-      throw new NotFoundException('Log source not found');
-    }
-
+    const logSource = dto.logSourceId ? await this.logSourcesService.findOne(dto.logSourceId, ownerId) : null;
     const remoteServer = await this.remoteServersService.findOne(dto.remoteServerId, ownerId);
 
     if (!remoteServer) {
@@ -51,7 +46,7 @@ export class LogAnalysisJobsService {
       ...dto,
       ownerId,
       status: LogAnalysisJobStatus.INITIALISED,
-      logSource,
+      logSource: logSource ?? undefined,
       remoteServer,
       createdAt: new Date(),
       updatedAt: new Date(),
